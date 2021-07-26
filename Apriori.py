@@ -1,8 +1,6 @@
 '''
 Script Details:
-
-Author: Vedant Vinayak Kulkarni
-        Student, Government College Of Engineering Jalgaon.
+        cript Generates frequent Itemset Needed for Apriori Rule Generation.
 
 Git: 
 '''
