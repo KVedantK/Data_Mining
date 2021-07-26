@@ -8,6 +8,7 @@ Git:
 '''
 import csv
 import time
+import itertools
 
 
 start_time = time.time()
@@ -36,14 +37,39 @@ def CreateFrequentSet(CandidateSet):
     SupportSet = {}
     Transactions = len(CandidateSet)
     for key in CandidateSet:
-        SupportSet[key] = CandidateSet[key]/Transactions
+        SupportSet[key] =   int((CandidateSet[key][0]/Transactions)*10)
     return SupportSet
 
-def Combinator(CandidateSet):
-    pass
+final_set = (GenerateCandidateSet(CSV_TO_LIST('testdata.csv')))
+#print(final_set)
 
-print(GenerateCandidateSet(CSV_TO_LIST('Market_Basket_Optimisation.csv')))
+def SetGenerater(data_set, threshold):
+    items = data_set.keys()
+    transactions = len(CSV_TO_LIST('testdata.csv'))
+    All_Com = []
+    Final_Frequent_Sets = []
+    for i in range (1,len(items)):
+        comb = list(itertools.combinations(items, i))
+        All_Com.append(comb)
+    for i in All_Com:
+        if i == 0:
+            for j in i:
+                for item in j:
+                    f = int((data_set[item][0]/transactions)*100)
+                    if f > threshold:
+                        Final_Frequent_Sets.append(j)
+        else:
+            for j in i:
+                sets = []
+                for item in j:
+                    s = set(data_set[item][1])
+                    sets.append(s)
+                    print("For Itemset {}".format(j))
+                    print(int((len(set.intersection(*sets))/transactions)*100))
+                if int((len(set.intersection(*sets))/transactions)*100) > threshold:
+                    Final_Frequent_Sets.append(j)
+                    
+    return Final_Frequent_Sets
+
+print(SetGenerater(final_set, 50))
 print("--- %s seconds ---" % (time.time() - start_time))
-
-
-
